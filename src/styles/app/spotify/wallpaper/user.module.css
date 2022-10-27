@@ -1,0 +1,61 @@
+.wrapper {
+  position: relative;
+  height: 100%;
+  display: flex;
+}
+.wrapper.position0,
+.wrapper.position2 {
+  flex-direction: row-reverse;
+  justify-content: left;
+}
+.wrapper.position1,
+.wrapper.position3 {
+  flex-direction: row;
+  justify-content: right;
+}
+.wrapper.position0,
+.wrapper.position1 {
+  align-items: flex-start;
+}
+.wrapper.position2,
+.wrapper.position3 {
+  align-items: flex-end;
+}
+
+.name {
+  position: relative;
+  white-space: nowrap;
+  background-color: var(--spotify-color-black);
+  color: var(--spotify-color-white);
+  font-size: 30%;
+  border-radius: 10px;
+  padding: 10px 15px;
+}
+.position0 .name,
+.position2 .name {
+  left: -7vmin;
+  padding-left: 7vmin;
+}
+.position1 .name,
+.position3 .name {
+  right: -7vmin;
+  padding-right: 7vmin;
+}
+.position0 .name,
+.position1 .name {
+  top: 25%;
+}
+.position2 .name,
+.position3 .name {
+  bottom: 25%;
+}
+
+.icon {
+  position: relative;
+  height: calc(100% - 10px);
+  aspect-ratio: 1;
+  margin: 10px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: var(--spotify-color-black);
+}

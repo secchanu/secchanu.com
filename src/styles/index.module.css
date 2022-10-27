@@ -1,0 +1,41 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.title {
+  margin: 1.5em 0;
+  text-align: center;
+}
+
+.flex {
+  margin: auto;
+  width: fit-content;
+  display: flex;
+  gap: 6px;
+}
+
+.profile {
+  width: 350px;
+}
+
+.news {
+  width: 500px;
+}
+
+.info {
+  margin: 15px;
+}
+
+.info > * {
+  line-height: 2;
+}
+
+.stars {
+  text-align: center;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+}

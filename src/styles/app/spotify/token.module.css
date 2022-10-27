@@ -1,0 +1,48 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--spotify-color-black);
+  color: var(--spotify-color-white);
+  font-family: var(--spotify-font-family);
+}
+
+.generator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: fit-content;
+  height: fit-content;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.board .token {
+  width: fit-content;
+  height: fit-content;
+  white-space: nowrap;
+  border-radius: 5px;
+  padding: 20px 30px;
+}
+
+.copy {
+  border: 4px solid var(--spotify-color-white);
+}
+
+.copied {
+  border: 4px solid var(--spotify-color-green);
+}
+
+.board .button {
+  padding: 10px 30px;
+  font-weight: 700;
+}

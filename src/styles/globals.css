@@ -1,0 +1,19 @@
+:root {
+  --spotify-color-green: #1d8954;
+  --spotify-color-white: #ffffff;
+  --spotify-color-black: #191414;
+  --spotify-font-family: sans-serif, "Helvetica Neue", "Helvetica", "Arial";
+
+  --abehiroshi-color-menu-bg: #f0f0ff;
+  --abehiroshi-color-menu-1: #ffcccc;
+  --abehiroshi-color-menu-2: #00ff00;
+  --abehiroshi-color-menu-3: #33ffff;
+  --abehiroshi-color-menu-4: #0099ff;
+  --abehiroshi-color-menu-5: #0000ff;
+  --abehiroshi-color-menu-6: #333399;
+  --abehiroshi-color-menu-7: #cc00cc;
+}
+
+body {
+  text-size-adjust: none;
+}
