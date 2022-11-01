@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import type SpotifyWebApi from "spotify-web-api-js";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import styles from "@/styles/app/spotify/wallpaper/progress.module.css";
 
@@ -19,12 +19,11 @@ const Component: FunctionComponent<Props> = (props) => {
 
   const [progress, setProgress] = useState(0);
   const [prog, setProg] = useState<number>();
-  const [ignore, setIgnore] = useState(false);
+  const ignore = useRef(false);
 
   useEffect(() => {
-    if (ignore) return;
+    if (ignore.current) return;
     setProgress(playbackState?.progress_ms ?? 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playbackState]);
 
   return (
@@ -36,12 +35,21 @@ const Component: FunctionComponent<Props> = (props) => {
         value={prog ?? progress}
         max={duration ?? 1}
         onChange={(e) => setProg(Number(e.target.value))}
+        onMouseDown={() => {
+          ignore.current = true;
+        }}
+        onMouseLeave={async () => {
+          if (prog === undefined) return;
+          setProgress(prog);
+          await spotifyApi.seek(prog).catch(() => {});
+          ignore.current = false;
+          setProg(undefined);
+        }}
         onMouseUp={async () => {
           if (prog === undefined) return;
-          setIgnore(true);
           setProgress(prog);
-          await spotifyApi.seek(prog);
-          setIgnore(false);
+          await spotifyApi.seek(prog).catch(() => {});
+          ignore.current = false;
           setProg(undefined);
         }}
       />

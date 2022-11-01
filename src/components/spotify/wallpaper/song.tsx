@@ -14,7 +14,7 @@ const msToStr = (ms: number) => {
 };
 
 const longStr = (str: string) => {
-  return `${str}　　　　　${str}　　　　　`;
+  return `${str}　　　　　　${str}　　　　　　`;
 };
 
 type Props = {
@@ -52,7 +52,6 @@ const Component: FunctionComponent<Props> = (props) => {
     if (songElem.current?.clientWidth) {
       setIsLongSong(songElem.current.clientWidth > threshold);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threshold, artist, song]);
 
   useEffect(() => {
@@ -64,7 +63,7 @@ const Component: FunctionComponent<Props> = (props) => {
       (neighborType === "song" ? 0.5 * width : neighborElem?.clientWidth ?? 0) -
       (progressElem.current?.clientWidth ?? 0) -
       ((margin.at(1) ?? 0) + (margin.at(3) ?? 0)) -
-      60;
+      100;
     setThreshold(space);
   }, [contents, width, position, margin, duration]);
 

@@ -2,6 +2,7 @@ import type { FunctionComponent } from "react";
 
 import { useState, useEffect, useRef } from "react";
 import useViewSize from "./useViewSize";
+import useAudioListener from "./useAudioListener";
 
 import Vibrant from "node-vibrant";
 
@@ -14,39 +15,36 @@ const interval = 60 * 1000;
 type Props = {
   margin: number[];
   playbackState: SpotifyApi.CurrentPlaybackResponse | undefined;
-  mySavedTracks?: SpotifyApi.UsersSavedTracksResponse;
-  audioArray: number[];
+  mySavedTracks: SpotifyApi.UsersSavedTracksResponse | undefined;
 };
 const Component: FunctionComponent<Props> = (props) => {
   const margin = props.margin;
   const playbackState = props.playbackState;
   const mySavedTracks = props.mySavedTracks;
-  const audioArray = props.audioArray;
 
   const image = playbackState?.item?.album.images.at(0)?.url;
   const playing = playbackState?.is_playing;
 
+  const prevImage = useRef<string>();
   const [color, setColor] = useState<string>();
-  const [prevImage, setPrevImage] = useState<string>();
   const [keepImage, setKeepImage] = useState<string>();
-
-  const getColor = (path: string | undefined) => {
-    if (!path) return;
-    const vibrant = Vibrant.from(path);
-    vibrant.getPalette((_, palette) => setColor(palette?.Muted?.hex));
-  };
-  if (image !== prevImage) {
-    getColor(image);
-    setPrevImage(image);
-  }
-
   const canvas = useRef<HTMLCanvasElement>(null);
   const [width, height] = useViewSize();
+  const audioArray = useAudioListener();
+
+  if (image !== prevImage.current) {
+    prevImage.current = image;
+    if (image) {
+      const vibrant = Vibrant.from(image);
+      vibrant.getPalette((_, palette) => setColor(palette?.Muted?.hex));
+    }
+  }
 
   const minDir = Number(width < height);
   const diff =
     margin.filter((_, i) => i % 2 === minDir).reduce((acc, m) => acc + m, 0) /
     2;
+
   useEffect(() => {
     if (!canvas.current) return;
     canvas.current.width = width;
@@ -57,9 +55,8 @@ const Component: FunctionComponent<Props> = (props) => {
     const right = margin.at(1) ?? 0;
     const bottom = margin.at(2) ?? 0;
     const left = margin.at(3) ?? 0;
-    const min = Math.min(...audioArray);
     const max = Math.max(...audioArray);
-    const threshold = (max - min) * (2 / 3);
+    const threshold = max * (2 / 3);
     const getXY = (value: number, index: number): [number, number] => {
       const v = rin + (value > threshold ? value : 0) * rin;
       const x = (width - (left + right)) / 2 + left + Math.cos(index * fan) * v;
@@ -76,15 +73,16 @@ const Component: FunctionComponent<Props> = (props) => {
     context.lineWidth = rin / 50;
     context.strokeStyle = color ?? "#fff";
     context.stroke();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width, height, audioArray, color, margin]);
+  }, [width, height, audioArray, color, margin, diff]);
 
   useEffect(() => {
-    if (playing) return;
     const images = mySavedTracks?.items
       .map((i) => i?.track?.album?.images?.at(0)?.url)
       .filter((s) => s);
-    if (!images?.length) return;
+    if (!images?.length) {
+      setKeepImage(undefined);
+      return;
+    }
     const updateKeepImage = () => {
       setKeepImage((k) => {
         const keeper = images
@@ -98,7 +96,6 @@ const Component: FunctionComponent<Props> = (props) => {
       updateKeepImage();
     }, interval);
     return () => clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mySavedTracks]);
 
   if (!playbackState)

@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "@/pages/_app";
 
 import Image from "next/image";
+import Link from "next/link";
 import Layout from "@/components/AbeHiroshi";
 
 import styles from "@/styles/index.module.css";

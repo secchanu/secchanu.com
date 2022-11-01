@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import type SpotifyWebApi from "spotify-web-api-js";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import styles from "@/styles/app/spotify/wallpaper/control.module.css";
 
@@ -39,23 +39,30 @@ const Component: FunctionComponent<Props> = (props) => {
   const spotifyApi = props.spotifyApi;
   const isPremium = props.isPremium;
 
-  const [shuffle, setShuffle] = useState<boolean>();
-  const [play, setPlay] = useState<boolean>();
-  const [repeat, setRepeat] = useState<number>();
+  const [panelState, setPanelState] = useState<{
+    shuffle?: boolean;
+    play?: boolean;
+    repeat?: number;
+  }>({});
   const [volume, setVolume] = useState(0);
   const [vol, setVol] = useState<number>();
-  const [ignore, setIgnore] = useState(false);
+  const ignore = useRef(false);
 
   useEffect(() => {
-    if (ignore) return;
-    setShuffle(playbackState?.shuffle_state);
-    setPlay(playbackState?.is_playing);
+    if (ignore.current) return;
     const repeatNum = repeatStates.findIndex(
       (s) => s === playbackState?.repeat_state
     );
-    setRepeat(repeatNum === -1 ? undefined : repeatNum);
+    setPanelState({
+      shuffle: playbackState?.shuffle_state,
+      play: playbackState?.is_playing,
+      repeat: repeatNum === -1 ? undefined : repeatNum,
+    });
+  }, [playbackState]);
+
+  useEffect(() => {
+    if (ignore.current) return;
     setVolume(playbackState?.device?.volume_percent ?? 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playbackState]);
 
   return (
@@ -73,19 +80,21 @@ const Component: FunctionComponent<Props> = (props) => {
           <div
             className={styles.shuffle}
             onClick={async () => {
-              setIgnore(true);
-              setShuffle(!shuffle);
-              await spotifyApi.setShuffle(!shuffle);
-              setIgnore(false);
+              ignore.current = true;
+              setPanelState((prev) => {
+                return { ...prev, shuffle: !prev.shuffle };
+              });
+              await spotifyApi.setShuffle(!panelState.shuffle).catch(() => {});
+              ignore.current = false;
             }}
           >
             <span className={`material-symbols-outlined ${styles.icon}`}>
-              {shuffle ? "shuffle_on" : "shuffle"}
+              {panelState.shuffle ? "shuffle_on" : "shuffle"}
             </span>
           </div>
           <div
             className={styles.previous}
-            onClick={() => spotifyApi.skipToPrevious()}
+            onClick={() => spotifyApi.skipToPrevious().catch(() => {})}
           >
             <span className={`material-symbols-outlined ${styles.icon}`}>
               skip_previous
@@ -94,17 +103,24 @@ const Component: FunctionComponent<Props> = (props) => {
           <div
             className={styles.play}
             onClick={async () => {
-              setIgnore(true);
-              setPlay(!play);
-              await (play ? spotifyApi.pause() : spotifyApi.play());
-              setIgnore(false);
+              ignore.current = true;
+              setPanelState((prev) => {
+                return { ...prev, play: !prev.play };
+              });
+              await (panelState.play
+                ? spotifyApi.pause().catch(() => {})
+                : spotifyApi.play().catch(() => {}));
+              ignore.current = false;
             }}
           >
             <span className={`material-symbols-outlined ${styles.icon}`}>
-              {play ? "pause_circle" : "play_circle"}
+              {panelState.play ? "pause_circle" : "play_circle"}
             </span>
           </div>
-          <div className={styles.next} onClick={() => spotifyApi.skipToNext()}>
+          <div
+            className={styles.next}
+            onClick={() => spotifyApi.skipToNext().catch(() => {})}
+          >
             <span className={`material-symbols-outlined ${styles.icon}`}>
               skip_next
             </span>
@@ -112,39 +128,53 @@ const Component: FunctionComponent<Props> = (props) => {
           <div
             className={styles.repeat}
             onClick={async () => {
-              setIgnore(true);
-              const repeatNum = ((repeat ?? 0) + 1) % repeatStates.length;
-              setRepeat(repeatNum);
-              await spotifyApi.setRepeat(getRepeatState(repeatNum));
-              setIgnore(false);
+              ignore.current = true;
+              const repeatNum =
+                ((panelState.repeat ?? 0) + 1) % repeatStates.length;
+              setPanelState((prev) => {
+                return { ...prev, repeat: repeatNum };
+              });
+              await spotifyApi
+                .setRepeat(getRepeatState(repeatNum))
+                .catch(() => {});
+              ignore.current = false;
             }}
           >
             <span className={`material-symbols-outlined ${styles.icon}`}>
-              {getRepeatStr(repeat)}
+              {getRepeatStr(panelState.repeat)}
             </span>
           </div>
         </div>
         <div className={styles.volume}>
           <span className={`material-symbols-outlined ${styles.icon}`}>
-            volume_up
+            {vol ?? volume ? "volume_up" : "volume_off"}
           </span>
           <input
             type="range"
             className={styles.bar}
             disabled={
               !isPremium ||
-              !playbackState?.device?.volume_percent ||
+              playbackState?.device?.volume_percent === undefined ||
               ["Smartphone"].includes(playbackState.device.type)
             }
             value={vol ?? volume}
             max={100}
             onChange={(e) => setVol(Number(e.target.value))}
-            onMouseUp={async () => {
+            onMouseDown={() => {
+              ignore.current = true;
+            }}
+            onMouseLeave={async () => {
               if (vol === undefined) return;
-              setIgnore(true);
               setVolume(vol);
               await spotifyApi.setVolume(vol).catch(() => {});
-              setIgnore(false);
+              ignore.current = false;
+              setVol(undefined);
+            }}
+            onMouseUp={async () => {
+              if (vol === undefined) return;
+              setVolume(vol);
+              await spotifyApi.setVolume(vol).catch(() => {});
+              ignore.current = false;
               setVol(undefined);
             }}
           />

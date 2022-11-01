@@ -44,8 +44,9 @@ const Component: FunctionComponent<Props> = (props) => {
         key={item.id}
         className={styles.item}
         style={{
-          backgroundColor: palette?.Muted?.hex,
-          color: palette?.Muted?.bodyTextColor,
+          backgroundColor: palette?.DarkMuted?.hex,
+          color: palette?.DarkMuted?.bodyTextColor,
+          boxShadow: `5px 5px 5px 0 ${palette?.DarkVibrant?.hex}`,
         }}
       >
         <img className={styles.image} src={image} alt="" />

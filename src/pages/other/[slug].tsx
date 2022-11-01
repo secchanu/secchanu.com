@@ -4,6 +4,7 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 
 import Layout from "@/components/AbeHiroshi";
 
+import "github-markdown-css";
 import styles from "@/styles/[slug].module.css";
 
 import { readdirSync, readFileSync } from "fs";
@@ -25,9 +26,11 @@ const Page: NextPageWithLayout<Props> = (props) => {
   const item = props.item;
 
   return (
-    <article className={styles.content}>
-      <ReactMarkdown>{item.content}</ReactMarkdown>
-    </article>
+    <div className={styles.wrapper}>
+      <article className={`${styles["markdown-body"]} markdown-body`}>
+        <ReactMarkdown>{item.content}</ReactMarkdown>
+      </article>
+    </div>
   );
 };
 

@@ -7,7 +7,7 @@
   height: 100%;
   display: flex;
   justify-content: space-around;
-  padding: 10px 20px;
+  padding: 0.1em 0.2em;
   color: var(--spotify-color-white);
 }
 .position0 .clock {
