@@ -2,7 +2,7 @@
 
 ## Spotify 壁紙
 
-<img src="https://secchanu.com/app/spotify-wallpaper.png" width="560">
+<img src="/app/spotify-wallpaper.png" width="560">
 
 ### 概要
 
@@ -45,13 +45,13 @@ TypeScript での修正 + デモ版の実装: 2 週間
 
 ### ソースコード
 
-[https://github.com/secchanu/spotify-wallpaper](https://github.com/secchanu/spotify-wallpaper)
+[secchanu/spotify-wallpaper](https://github.com/secchanu/spotify-wallpaper)
 
 <br>
 
 ## KUS ドラフト杯
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/dPXY_E8wQiA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe style="max-width: 100%;"  width="560" height="315" src="https://www.youtube.com/embed/dPXY_E8wQiA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### 概要
 
@@ -141,8 +141,8 @@ Discord API の仕様変更により現在動作不可のため非公開
 
 ## KUeST-streaming
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/5vVzDPwHQlU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Du3jJP6VtTw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe style="max-width: 100%;"  width="560" height="315" src="https://www.youtube.com/embed/5vVzDPwHQlU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe style="max-width: 100%;"  width="560" height="315" src="https://www.youtube.com/embed/Du3jJP6VtTw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### 概要
 
@@ -181,15 +181,15 @@ Discord API の仕様変更により現在動作不可のため非公開
 
 ### ソースコード
 
-VALORANT 版: [https://github.com/KU-eSports/kuest-streaming/tree/prod/valorant](https://github.com/KU-eSports/kuest-streaming/tree/prod/valorant)
+VALORANT 版: [KU-eSports/kuest-streaming#valorant](https://github.com/KU-eSports/kuest-streaming/tree/prod/valorant)
 
-Splatoon3 版: [https://github.com/KU-eSports/kuest-streaming/tree/prod/splatoon3](https://github.com/KU-eSports/kuest-streaming/tree/prod/splatoon3)
+Splatoon3 版: [KU-eSports/kuest-streaming#splatoon3](https://github.com/KU-eSports/kuest-streaming/tree/prod/splatoon3)
 
 <br>
 
 ## nodecg-valorant
 
-<img src="https://secchanu.com/app/nodecg-valorant.webp" width="560">
+<img src="/app/nodecg-valorant.webp" width="560">
 
 ### 概要
 
@@ -231,11 +231,103 @@ VALORANT の公式大会である [VALORANT Champions Tour (VCT)](https://valora
 
 ### ソースコード
 
-[https://github.com/secchanu/nodecg-valorant](https://github.com/secchanu/nodecg-valorant)
+[secchanu/nodecg-valorant](https://github.com/secchanu/nodecg-valorant)
+
+<br>
+
+## 自鯖用 Discord Bot
+
+<img src="/app/discord-snow-bot.gif" width="560">
+
+### 概要
+
+自分が管理している Discord サーバーで使用している Discord Bot
+
+### 詳細
+
+ボイスチャット(VC)やテキストチャット(TC)の自動生成、チーム分けや集合の VC 移動の自動化、投票機能やアイテムの抽選など
+
+自分が欲しい機能やメンバーからの要望があったものを順次追加している
+
+#### 背景
+
+Discord の機能はそのままでも便利ではあるが、使用している中でこんな機能があったら便利だと感じる場面があったので作成し始めた。
+
+#### 機能
+
+Discord の VC は複数追加できるが、足りなくなった時には権限を持っている人が新しいVCを追加する必要があり、逆に余っていた場合には目的の VC を探すのに時間がかかる可能性がある。そこで VC は 1 つだけ用意しておき、そこに入室することで新しい VC を生成し、生成した VC 内の人数が 0 人 になった時に自動的に削除する仕組みにすることで、必要な分だけの VC が存在するようにしている。また、以前は VC ごとの TC がなかったため、自動で VC 内にいる人だけが閲覧可能な TC も生成し、新しいメンバーが入室する度にそのメンバーに閲覧権限を付与することで独自に実装している。
+
+VC 移動の自動化やアイテムの抽選などは後述の VALORANT カスタム Bot にも移植しているので、そちらで説明する。
+
+#### 工夫点
+
+- サーバーのメンバーから要望があった機能を追加していった。
+- 他のツールを使用して行うようなことをDiscordで完結できるようにした。
+
+### 開発環境
+
+言語: JavaScript
+
+ライブラリ: Discord.js
+
+### 開発期間
+
+不定
+
+### ソースコード
+
+[secchanu/discord-snow-bot](https://github.com/secchanu/discord-snow-bot)
+
+<br>
+
+## VALORANT カスタム Bot
+
+<img src="/app/discord-valorant-custom-bot.png" width="560">
+
+### 概要
+
+カスタムゲーム用の Discord Bot
+
+### 詳細
+
+#### コマンド一覧
+
+- `/help`: Botの説明を表示する。
+- `/setting`: 使用するVCを選択して設定する。
+- `/map`: マップの抽選を行う。
+- `/team`: 同じVCにいるメンバーを2チームに分け、ボタンを押して確定すると設定されているVCにそれぞれ移動させる。ボタン操作でキャンセルや再抽選も可能になっている。(`/setting`後に使用可能)
+- `/call`: チーム分けしたメンバー全員を1つの設定したVCに集合させる。(`/setting`後に使用可能)
+
+#### 背景
+
+カスタムゲーム(2チームに分かれて対戦するモード)を行う際、
+チーム分けや対戦後の集合、マップの抽選などが必要となってくる。
+しかし、チーム分けを外部ツールなどで行った場合、メンバーの入力や、結果を確認して各自でDiscordを操作してVCを移動するといった手間が生じる。また、再度集合する際にも同様に各自で移動する手間が生じる。
+
+そこで、Discord Botで同じVCにいるメンバーを取得し、チーム分けを行うことで、Botによる操作でメンバーのVC移動を自動化しようと考えた。
+
+#### 工夫点
+
+- コマンドで抽選を行った後はボタンによる操作でキャンセル、移動の実行、再抽選を行えるようにした。
+- 自分のサーバー以外でも使えるように設定用のコマンドを実装し、どのサーバーでも使えるようにした。
+- マップはゲームのアップデートによって変わるものなので、設定ファイルを書き換えるだけで抽選される中身を変更できるようにした。
+
+### 開発環境
+
+言語: JavaScript
+
+ライブラリ: Discord.js
+
+### 開発期間
+
+1日
+
+### ソースコード
+
+[secchanu/discord-valorant-custom-bot](https://github.com/secchanu/discord-valorant-custom-bot)
 
 
-
-# その他
+# 各種アカウント
 
 - [Github](https://github.com/secchanu)
 - [Qiita](https://qiita.com/secchanu)
