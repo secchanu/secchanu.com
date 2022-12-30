@@ -202,8 +202,8 @@ VALORANT 用の NodeCG バンドルで、
 
 #### 背景
 
-VALORANT の公式大会である [VALORANT Champions Tour (VCT)](https://valorantesports.com) などでの試合結果の表示がとてもかっこいいと感じたことから自分でも作ってみたいと思い、作成した。
-はじめは公式のトレースを作成したが、実際に自分で使うのであればオリジナルのものを作りたいと思ったことからオリジナル版の開発に至った。
+VALORANT の公式大会である [VALORANT Champions Tour (VCT)](https://valorantesports.com) などでの試合結果の表示がとても魅力的に感じたことから自分でも作ってみたいと思い、作成した。
+最初は公式のトレースを作成したが、実際に自分で使うのであればオリジナルのものを作りたいと思ったことからオリジナル版の開発に至った。
 
 開発には [2021 年の State of JS (フロントエンドフレームワーク)](https://2021.stateofjs.com/ja-JP/libraries/front-end-frameworks/) で高い満足度を記録していた [Solid.js](https://www.solidjs.com/) を使ってみたかったので採用した。
 
